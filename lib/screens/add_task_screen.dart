@@ -12,9 +12,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   String _title = '';
   String _priority = '';
   DateTime _date = DateTime.now();
-
   TextEditingController _dateController = TextEditingController();
+
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
+  final List<String> _priorities = ['Low', 'Medium', 'High'];
 
   _handleDatePicker() async {
     final date = await showDatePicker(
@@ -97,23 +98,36 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.0),
-                  child: TextFormField(
+                  child: DropdownButtonFormField(
+                    icon: Icon(Icons.arrow_drop_down_circle),
+                    iconSize: 22.0,
+                    iconEnabledColor: Theme.of(context).primaryColor,
+                    items: _priorities.map((String priority) {
+                      return DropdownMenuItem(
+                        value: priority,
+                        child: Text(
+                          priority,
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
+                    }).toList(),
                     style: TextStyle(fontSize: 18.0),
                     decoration: InputDecoration(
-                      labelText: "Title",
+                      labelText: "Priority",
                       labelStyle: TextStyle(fontSize: 18.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    validator: (input) {
-                      if (input == null) return input;
-                      return input.trim().isEmpty
-                          ? 'Please enter a title'
-                          : null;
+                    validator: (input) =>
+                        input == null ? 'Please select a priority level' : null,
+                    onChanged: (value) {
+                      setState(() {
+                        _priority = value.toString();
+                      });
                     },
-                    onSaved: (input) => input != null ? _title = input : null,
-                    initialValue: _title,
                   ),
                 ),
               ],
