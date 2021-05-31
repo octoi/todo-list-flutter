@@ -10,6 +10,9 @@ class TodoList extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.red,
+      ),
       home: TodoListScreen(),
     );
   }
