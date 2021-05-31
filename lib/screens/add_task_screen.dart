@@ -91,6 +91,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
                         child: TextFormField(
+                          readOnly: true,
                           controller: _dateController,
                           onTap: _handleDatePicker,
                           style: TextStyle(fontSize: 18.0),
@@ -136,6 +137,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               _priority = value.toString();
                             });
                           },
+                          value: _priority,
                         ),
                       ),
                     ],
