@@ -6,6 +6,28 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
+  Widget _buildTask(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("Task title"),
+            subtitle: Text("February 20 2021 • High"),
+            trailing: Checkbox(
+              value: true,
+              onChanged: (value) {
+                print(value);
+              },
+              activeColor: Theme.of(context).primaryColor,
+            ),
+          ),
+          Divider(),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +39,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       body: ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 80.0),
         physics: BouncingScrollPhysics(),
-        itemCount: 10,
+        itemCount: 20,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
             return Padding(
@@ -50,12 +72,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
             );
           }
 
-          return Container(
-            margin: EdgeInsets.all(10.0),
-            height: 100.0,
-            color: Colors.red,
-            width: double.infinity,
-          );
+          return _buildTask(index);
         },
       ),
     );
