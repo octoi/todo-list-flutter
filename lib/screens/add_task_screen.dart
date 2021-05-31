@@ -32,6 +32,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
+  _submit() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      print(_title);
+      print(_date);
+      print(_priority);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +87,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             ),
                           ),
                           validator: (input) {
-                            if (input == null) return input;
-                            return input.trim().isEmpty
+                            return input.toString().trim().isEmpty
                                 ? 'Please enter a title'
                                 : null;
                           },
@@ -138,6 +146,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             });
                           },
                           value: _priority,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.0),
+                        height: 60.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: FlatButton(
+                          child: Text(
+                            "Add",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          onPressed: _submit,
                         ),
                       ),
                     ],
