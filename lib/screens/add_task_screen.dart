@@ -35,105 +35,116 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Icon(
-              Icons.arrow_back_ios,
-              size: 30.0,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-          SizedBox(height: 20.0),
-          Text(
-            "Add Task",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 10.0),
-          Form(
-            key: _formKey,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 80.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0),
-                  child: TextFormField(
-                    style: TextStyle(fontSize: 18.0),
-                    decoration: InputDecoration(
-                      labelText: "Title",
-                      labelStyle: TextStyle(fontSize: 18.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    validator: (input) {
-                      if (input == null) return input;
-                      return input.trim().isEmpty
-                          ? 'Please enter a title'
-                          : null;
-                    },
-                    onSaved: (input) => input != null ? _title = input : null,
-                    initialValue: _title,
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 30.0,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0),
-                  child: TextFormField(
-                    controller: _dateController,
-                    onTap: _handleDatePicker,
-                    style: TextStyle(fontSize: 18.0),
-                    decoration: InputDecoration(
-                      labelText: "Date",
-                      labelStyle: TextStyle(fontSize: 18.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
+                SizedBox(height: 20.0),
+                Text(
+                  "Add Task",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0),
-                  child: DropdownButtonFormField(
-                    icon: Icon(Icons.arrow_drop_down_circle),
-                    iconSize: 22.0,
-                    iconEnabledColor: Theme.of(context).primaryColor,
-                    items: _priorities.map((String priority) {
-                      return DropdownMenuItem(
-                        value: priority,
-                        child: Text(
-                          priority,
-                          style: TextStyle(
-                            color: Colors.black,
+                SizedBox(height: 10.0),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: TextFormField(
+                          style: TextStyle(fontSize: 18.0),
+                          decoration: InputDecoration(
+                            labelText: "Title",
+                            labelStyle: TextStyle(fontSize: 18.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          validator: (input) {
+                            if (input == null) return input;
+                            return input.trim().isEmpty
+                                ? 'Please enter a title'
+                                : null;
+                          },
+                          onSaved: (input) =>
+                              input != null ? _title = input : null,
+                          initialValue: _title,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: TextFormField(
+                          controller: _dateController,
+                          onTap: _handleDatePicker,
+                          style: TextStyle(fontSize: 18.0),
+                          decoration: InputDecoration(
+                            labelText: "Date",
+                            labelStyle: TextStyle(fontSize: 18.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                           ),
                         ),
-                      );
-                    }).toList(),
-                    style: TextStyle(fontSize: 18.0),
-                    decoration: InputDecoration(
-                      labelText: "Priority",
-                      labelStyle: TextStyle(fontSize: 18.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                    ),
-                    validator: (input) =>
-                        input == null ? 'Please select a priority level' : null,
-                    onChanged: (value) {
-                      setState(() {
-                        _priority = value.toString();
-                      });
-                    },
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: DropdownButtonFormField(
+                          icon: Icon(Icons.arrow_drop_down_circle),
+                          iconSize: 22.0,
+                          iconEnabledColor: Theme.of(context).primaryColor,
+                          items: _priorities.map((String priority) {
+                            return DropdownMenuItem(
+                              value: priority,
+                              child: Text(
+                                priority,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          style: TextStyle(fontSize: 18.0),
+                          decoration: InputDecoration(
+                            labelText: "Priority",
+                            labelStyle: TextStyle(fontSize: 18.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          validator: (input) => input == null
+                              ? 'Please select a priority level'
+                              : null,
+                          onChanged: (value) {
+                            setState(() {
+                              _priority = value.toString();
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                )
               ],
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
