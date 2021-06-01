@@ -10,7 +10,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final _formKey = GlobalKey<FormState>();
 
   String _title = '';
-  String _priority = '';
+  String _priority = 'Low';
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
 
@@ -114,17 +114,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
-                        child: DropdownButtonFormField(
+                        child: DropdownButtonFormField<String>(
                           icon: Icon(Icons.arrow_drop_down_circle),
                           iconSize: 22.0,
                           iconEnabledColor: Theme.of(context).primaryColor,
                           items: _priorities.map((String priority) {
-                            return DropdownMenuItem(
+                            return DropdownMenuItem<String>(
                               value: priority,
                               child: Text(
                                 priority,
                                 style: TextStyle(
                                   color: Colors.black,
+                                  fontSize: 18.0,
                                 ),
                               ),
                             );
@@ -137,7 +138,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          validator: (input) => input == null
+                          validator: (input) => _priority == ''
                               ? 'Please select a priority level'
                               : null,
                           onChanged: (value) {
