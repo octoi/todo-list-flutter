@@ -23,7 +23,9 @@ class Task {
 
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();
-    map['id'] = id;
+    if (id != 0) {
+      map['id'] = id;
+    }
     map['title'] = title;
     map['date'] = date.toIso8601String();
     map['priority'] = priority;
