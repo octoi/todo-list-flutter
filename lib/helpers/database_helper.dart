@@ -5,7 +5,8 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._instance();
-  static Database _db;
+  // static Database _db;
+  static var _db;
 
   DatabaseHelper._instance();
 
