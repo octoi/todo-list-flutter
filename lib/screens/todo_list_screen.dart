@@ -37,10 +37,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
   Widget build(BuildContext context) {
     List<Task> tasks = [];
 
-    List<Widget> getTasks() {
-      List<Widget> _taskWidgets = tasks.map((task) {
-        return _buildTask(task);
-      }).toList();
+    List<Widget> getTasks(List tasks) {
+      List<Widget> _taskWidgets = [];
+      print(tasks);
+      tasks.forEach((e) {
+        _taskWidgets.add(_buildTask(e));
+        print(e);
+      });
       return _taskWidgets;
     }
 
@@ -54,10 +57,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
             MaterialPageRoute(
               builder: (_) => AddTaskScreen(
                 addTask: (Task task, BuildContext ctx) {
-                  setState(() {
-                    tasks.add(task);
-                  });
                   Navigator.pop(ctx);
+                  List<Task> _tasks = tasks;
+                  _tasks.add(task);
+                  getTasks(_tasks);
                 },
               ),
             ),
@@ -97,7 +100,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ),
             ),
-            ...getTasks()
+            ...getTasks(tasks)
           ],
         ),
       ),
