@@ -12,15 +12,18 @@ class _TodoListScreenState extends State<TodoListScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Column(
         children: [
-          ListTile(
-            title: Text("Task title"),
-            subtitle: Text("February 20 2021 • High"),
-            trailing: Checkbox(
-              value: true,
-              onChanged: (value) {
-                print(value);
-              },
-              activeColor: Theme.of(context).primaryColor,
+          InkWell(
+            onTap: () {},
+            child: ListTile(
+              title: Text("Task title"),
+              subtitle: Text("February 20 2021 • High"),
+              trailing: Checkbox(
+                value: true,
+                onChanged: (value) {
+                  print(value);
+                },
+                activeColor: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           Divider(),
