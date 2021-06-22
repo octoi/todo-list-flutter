@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/models/task_model.dart';
 import 'package:todolist/screens/add_task_screen.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -7,7 +8,7 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  Widget _buildTask(int index) {
+  Widget _buildTask(Task task) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Column(
@@ -15,10 +16,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
           InkWell(
             onTap: () {},
             child: ListTile(
-              title: Text("Task title"),
-              subtitle: Text("February 20 2021 • High"),
+              title: Text(task.title),
+              subtitle: Text("${task.date.toString()} • ${task.priority}"),
               trailing: Checkbox(
-                value: true,
+                value: task.status,
                 onChanged: (value) {
                   print(value);
                 },
@@ -34,6 +35,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Task> tasks = [];
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
@@ -41,14 +44,20 @@ class _TodoListScreenState extends State<TodoListScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => AddTaskScreen()),
+            MaterialPageRoute(
+              builder: (_) => AddTaskScreen(
+                addTask: (Task task) {
+                  print(task);
+                },
+              ),
+            ),
           );
         },
       ),
       body: ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 80.0),
         physics: BouncingScrollPhysics(),
-        itemCount: 20,
+        itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
             return Padding(
@@ -81,7 +90,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
             );
           }
 
-          return _buildTask(index);
+          return _buildTask(tasks[index]);
         },
       ),
     );
