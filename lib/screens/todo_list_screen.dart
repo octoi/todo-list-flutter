@@ -37,16 +37,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
     );
   }
 
+  List<Widget> _displayTaskTiles() {
+    return tasks.map((task) => _buildTask(task)).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _addTaskWidget(List tasks) {
-      List<Widget> _taskWidgets = [];
-      tasks.forEach((e) => _taskWidgets.add(_buildTask(e)));
-      setState(() {
-        taskWidgets = _taskWidgets;
-      });
-    }
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
@@ -58,9 +54,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
               builder: (_) => AddTaskScreen(
                 addTask: (Task task, BuildContext ctx) {
                   Navigator.pop(ctx);
-                  List<Task> _tasks = tasks;
-                  _tasks.add(task);
-                  _addTaskWidget(_tasks);
+                  setState(() {
+                    tasks.add(task);
+                  });
                 },
               ),
             ),
@@ -100,7 +96,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ),
             ),
-            Column(children: taskWidgets),
+            Column(children: _displayTaskTiles()),
           ],
         ),
       ),
