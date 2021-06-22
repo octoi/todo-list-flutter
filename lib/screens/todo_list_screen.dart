@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:todolist/models/task_model.dart';
 import 'package:todolist/screens/add_task_screen.dart';
 
@@ -21,7 +20,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
             onTap: () {},
             child: ListTile(
               title: Text(task.title),
-              subtitle: Text("${task.date.toString()} • ${task.priority}"),
+              subtitle: Text("${task.date} • ${task.priority}"),
               trailing: Checkbox(
                 value: task.status,
                 onChanged: (value) {
