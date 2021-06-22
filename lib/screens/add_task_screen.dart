@@ -15,7 +15,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   String _title = '';
   String _priority = 'Low';
-  DateTime _date = DateTime.now();
+  String _date = DateTime.now().toString();
   TextEditingController _dateController = TextEditingController();
 
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
@@ -24,13 +24,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   _handleDatePicker() async {
     final date = await showDatePicker(
       context: context,
-      initialDate: _date,
+      initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
     if (date != null && date != _date) {
       setState(() {
-        _date = date;
+        _date = _dateFormatter.format(date);
       });
       _dateController.text = _dateFormatter.format(date);
     }
