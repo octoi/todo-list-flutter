@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:todolist/helpers/db_helper.dart';
 import 'package:todolist/models/task_model.dart';
 import 'package:todolist/screens/add_task_screen.dart';
 
@@ -61,6 +63,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   List<Widget> _displayTaskTiles() {
+    saveTasks(tasks);
     return tasks.map((task) => _buildTask(task)).toList();
   }
 
