@@ -31,10 +31,23 @@ Future<String> read() async {
 saveTasks(List<Task> allTasks) async {
   List<String> tasks = allTasks.map((task) => task.toJson()).toList();
   await write(tasks);
-  await getTasks();
 }
 
 getTasks() async {
   String contents = await read();
-  print(jsonDecode(contents));
+  var data = jsonDecode(contents);
+  List rawData = data['tasks'];
+  List<Task> returnData = [];
+
+  rawData.forEach((taskString) {
+    returnData.add(Task(
+      title: taskString['title'],
+      date: taskString['date'],
+      priority: taskString['priority'],
+      status: taskString['status'],
+      id: taskString['id'],
+    ));
+  });
+
+  return returnData;
 }
