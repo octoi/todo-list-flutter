@@ -1,6 +1,6 @@
 class Task {
   String title;
-  DateTime date;
+  String date;
   String priority;
   bool status;
 
