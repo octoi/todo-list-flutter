@@ -37,6 +37,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
   Widget build(BuildContext context) {
     List<Task> tasks = [];
 
+    List<Widget> getTasks() {
+      List<Widget> _taskWidgets = tasks.map((task) {
+        return _buildTask(task);
+      }).toList();
+      return _taskWidgets;
+    }
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
@@ -46,8 +53,11 @@ class _TodoListScreenState extends State<TodoListScreen> {
             context,
             MaterialPageRoute(
               builder: (_) => AddTaskScreen(
-                addTask: (Task task) {
-                  print(task);
+                addTask: (Task task, BuildContext ctx) {
+                  setState(() {
+                    tasks.add(task);
+                  });
+                  Navigator.pop(ctx);
                 },
               ),
             ),
@@ -87,49 +97,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ),
             ),
+            ...getTasks()
           ],
         ),
       ),
     );
   }
 }
-
-// ListView.builder(
-//         padding: EdgeInsets.symmetric(vertical: 80.0),
-//         physics: BouncingScrollPhysics(),
-//         itemCount: tasks.length,
-//         itemBuilder: (BuildContext context, int index) {
-//           if (index == 0) {
-//             return Padding(
-//               padding: const EdgeInsets.symmetric(
-//                 vertical: 20.0,
-//                 horizontal: 40.0,
-//               ),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     "My Tasks",
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 40.0,
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                   ),
-//                   SizedBox(height: 10.0),
-//                   Text(
-//                     "1 of 10",
-//                     style: TextStyle(
-//                       color: Colors.grey,
-//                       fontSize: 20.0,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             );
-//           }
-
-//           return _buildTask(tasks[index]);
-//         },
-//       ),
