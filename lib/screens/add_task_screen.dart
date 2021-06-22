@@ -46,7 +46,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         status: false,
       );
 
-      widget.addTask(_task);
+      widget.addTask(_task, context);
     }
   }
 
