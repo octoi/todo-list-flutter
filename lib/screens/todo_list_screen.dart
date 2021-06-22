@@ -13,6 +13,19 @@ class _TodoListScreenState extends State<TodoListScreen> {
   List<Task> tasks = [];
   List<Widget> taskWidgets = [];
 
+  getData() async {
+    List<Task> data = await getTasks();
+    setState(() {
+      tasks = data;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   void changeStatus(int id, bool status) {
     setState(() {
       tasks = tasks.map((task) {
