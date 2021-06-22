@@ -23,9 +23,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               subtitle: Text("${task.date} • ${task.priority}"),
               trailing: Checkbox(
                 value: task.status,
-                onChanged: (value) {
-                  print(value);
-                },
+                onChanged: (value) {},
                 activeColor: Theme.of(context).primaryColor,
               ),
             ),
