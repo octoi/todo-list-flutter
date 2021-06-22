@@ -11,6 +11,15 @@ class _TodoListScreenState extends State<TodoListScreen> {
   List<Task> tasks = [];
   List<Widget> taskWidgets = [];
 
+  void changeStatus(int id, bool status) {
+    setState(() {
+      tasks = tasks.map((task) {
+        if (task.id == id) task.status = status;
+        return task;
+      }).toList();
+    });
+  }
+
   Widget _buildTask(Task task) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -19,11 +28,28 @@ class _TodoListScreenState extends State<TodoListScreen> {
           InkWell(
             onTap: () {},
             child: ListTile(
-              title: Text(task.title),
-              subtitle: Text("${task.date} • ${task.priority}"),
+              title: Text(
+                task.title,
+                style: TextStyle(
+                  decoration: task.status
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
+              ),
+              subtitle: Text(
+                "${task.date} • ${task.priority}",
+                style: TextStyle(
+                  decoration: task.status
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
+              ),
               trailing: Checkbox(
                 value: task.status,
-                onChanged: (value) {},
+                onChanged: (status) {
+                  if (status == null) status = false;
+                  changeStatus(task.id, status);
+                },
                 activeColor: Theme.of(context).primaryColor,
               ),
             ),
