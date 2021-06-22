@@ -12,4 +12,8 @@ class Task {
     required this.status,
     required this.id,
   });
+
+  String toJson() {
+    return '{ "title": "$title", "date": "$date", "priority": "$priority", "status": "$status", "id": "$id" }';
+  }
 }
