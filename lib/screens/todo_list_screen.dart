@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:todolist/models/task_model.dart';
 import 'package:todolist/screens/add_task_screen.dart';
 
@@ -8,6 +9,9 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
+  List<Task> tasks = [];
+  List<Widget> taskWidgets = [];
+
   Widget _buildTask(Task task) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -35,16 +39,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Task> tasks = [];
-
-    List<Widget> getTasks(List tasks) {
+    _addTaskWidget(List tasks) {
       List<Widget> _taskWidgets = [];
-      print(tasks);
-      tasks.forEach((e) {
-        _taskWidgets.add(_buildTask(e));
-        print(e);
+      tasks.forEach((e) => _taskWidgets.add(_buildTask(e)));
+      setState(() {
+        taskWidgets = _taskWidgets;
       });
-      return _taskWidgets;
     }
 
     return Scaffold(
@@ -60,7 +60,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   Navigator.pop(ctx);
                   List<Task> _tasks = tasks;
                   _tasks.add(task);
-                  getTasks(_tasks);
+                  _addTaskWidget(_tasks);
                 },
               ),
             ),
@@ -100,7 +100,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ),
             ),
-            ...getTasks(tasks)
+            Column(children: taskWidgets),
           ],
         ),
       ),
