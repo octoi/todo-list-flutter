@@ -15,7 +15,7 @@ Future<File> get _localFile async {
 
 Future<File> write(data) async {
   final file = await _localFile;
-  return file.writeAsString('{tasks: $data}');
+  return file.writeAsString('{"tasks": $data}');
 }
 
 Future<String> read() async {
@@ -29,11 +29,12 @@ Future<String> read() async {
 }
 
 saveTasks(List<Task> allTasks) async {
-  await write(jsonEncode(allTasks));
+  List<String> tasks = allTasks.map((task) => task.toJson()).toList();
+  await write(tasks);
   await getTasks();
 }
 
 getTasks() async {
   String contents = await read();
-  print(contents);
+  print(jsonDecode(contents));
 }
