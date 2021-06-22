@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todolist/models/task_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
+  final Function addTask;
+
+  const AddTaskScreen({Key? key, required this.addTask}) : super(key: key);
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
@@ -11,7 +15,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   String _title = '';
   String _priority = 'Low';
-  DateTime _date = DateTime.now();
+  String _date = DateTime.now().toString();
   TextEditingController _dateController = TextEditingController();
 
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
@@ -20,13 +24,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   _handleDatePicker() async {
     final date = await showDatePicker(
       context: context,
-      initialDate: _date,
+      initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
     if (date != null && date != _date) {
       setState(() {
-        _date = date;
+        _date = _dateFormatter.format(date);
       });
       _dateController.text = _dateFormatter.format(date);
     }
@@ -35,9 +39,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(_title);
-      print(_date);
-      print(_priority);
+      Task _task = Task(
+        title: _title,
+        date: _date,
+        priority: _priority,
+        status: false,
+        id: DateTime.now().millisecondsSinceEpoch,
+      );
+
+      widget.addTask(_task, context);
     }
   }
 

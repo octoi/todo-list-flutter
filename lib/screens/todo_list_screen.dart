@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:todolist/helpers/db_helper.dart';
+import 'package:todolist/models/task_model.dart';
 import 'package:todolist/screens/add_task_screen.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -7,26 +10,74 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  Widget _buildTask(int index) {
+  List<Task> tasks = [];
+  List<Widget> taskWidgets = [];
+
+  getData() async {
+    List<Task> data = await getTasks();
+    setState(() {
+      tasks = data;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  void changeStatus(int id, bool status) {
+    setState(() {
+      tasks = tasks.map((task) {
+        if (task.id == id) task.status = status;
+        return task;
+      }).toList();
+    });
+  }
+
+  Widget _buildTask(Task task) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Column(
         children: [
-          ListTile(
-            title: Text("Task title"),
-            subtitle: Text("February 20 2021 • High"),
-            trailing: Checkbox(
-              value: true,
-              onChanged: (value) {
-                print(value);
-              },
-              activeColor: Theme.of(context).primaryColor,
+          InkWell(
+            onTap: () {},
+            child: ListTile(
+              title: Text(
+                task.title,
+                style: TextStyle(
+                  decoration: task.status
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
+              ),
+              subtitle: Text(
+                "${task.date} • ${task.priority}",
+                style: TextStyle(
+                  decoration: task.status
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
+              ),
+              trailing: Checkbox(
+                value: task.status,
+                onChanged: (status) {
+                  if (status == null) status = false;
+                  changeStatus(task.id, status);
+                },
+                activeColor: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           Divider(),
         ],
       ),
     );
+  }
+
+  List<Widget> _displayTaskTiles() {
+    saveTasks(tasks);
+    return tasks.map((task) => _buildTask(task)).toList();
   }
 
   @override
@@ -38,17 +89,26 @@ class _TodoListScreenState extends State<TodoListScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => AddTaskScreen()),
+            MaterialPageRoute(
+              builder: (_) => AddTaskScreen(
+                addTask: (Task task, BuildContext ctx) {
+                  Navigator.pop(ctx);
+                  setState(() {
+                    tasks.add(task);
+                  });
+                },
+              ),
+            ),
           );
         },
       ),
-      body: ListView.builder(
+      body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 80.0),
         physics: BouncingScrollPhysics(),
-        itemCount: 20,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return Padding(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 20.0,
                 horizontal: 40.0,
@@ -75,11 +135,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   )
                 ],
               ),
-            );
-          }
-
-          return _buildTask(index);
-        },
+            ),
+            Column(children: _displayTaskTiles()),
+          ],
+        ),
       ),
     );
   }
