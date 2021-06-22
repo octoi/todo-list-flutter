@@ -44,7 +44,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         date: _date,
         priority: _priority,
         status: false,
-        id: DateTime.now(),
+        id: DateTime.now().millisecondsSinceEpoch,
       );
 
       widget.addTask(_task, context);
