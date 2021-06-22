@@ -90,6 +90,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         padding: EdgeInsets.symmetric(vertical: 80.0),
         physics: BouncingScrollPhysics(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
