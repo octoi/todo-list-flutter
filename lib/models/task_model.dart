@@ -2,7 +2,7 @@ class Task {
   String title;
   DateTime date;
   String priority;
-  int status; // 0 - incomplete, 1 - complete
+  bool status;
 
   Task({
     required this.title,
