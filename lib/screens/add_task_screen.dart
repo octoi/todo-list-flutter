@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todolist/models/task_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
+  final Function addTask;
+
+  const AddTaskScreen({Key? key, required this.addTask}) : super(key: key);
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
@@ -35,9 +39,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(_title);
-      print(_date);
-      print(_priority);
+      Task _task = Task(
+        title: _title,
+        date: _date,
+        priority: _priority,
+        status: false,
+      );
+
+      widget.addTask(_task);
     }
   }
 
